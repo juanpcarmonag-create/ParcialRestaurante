@@ -5,13 +5,14 @@ import java.time.LocalDate;
 public class Pedido {
     private int codigoPedido;
     private LocalDate fecha;
-    private Entrega entrega;
+    private ModalidadEntrega modalidadEntrega;
+    private IServicioDomicilio iservicioDomicilio;
     private EstadoPedido estadoPedido;
 
-    public Pedido(int codigoPedido, LocalDate fecha, Entrega entrega, EstadoPedido estadoPedido) {
+    public Pedido(int codigoPedido, LocalDate fecha, ModalidadEntrega modalidadEntrega, EstadoPedido estadoPedido) {
         this.codigoPedido = codigoPedido;
         this.fecha = fecha;
-        this.entrega = entrega;
+        this.modalidadEntrega = modalidadEntrega;
         this.estadoPedido = estadoPedido;
     }
 
@@ -31,12 +32,20 @@ public class Pedido {
         this.fecha = fecha;
     }
 
-    public Entrega getEntrega() {
-        return entrega;
+    public ModalidadEntrega getModalidadEntrega() {
+        return modalidadEntrega;
     }
 
-    public void setEntrega(Entrega entrega) {
-        this.entrega = entrega;
+    public void setModalidadEntrega(ModalidadEntrega modalidadEntrega) {
+        this.modalidadEntrega = modalidadEntrega;
+    }
+
+    public IServicioDomicilio getIServicioDomicilio() {
+        return iservicioDomicilio;
+    }
+
+    public void setServicioDomicilio(IServicioDomicilio servicioDomicilio) {
+        this.iservicioDomicilio = servicioDomicilio;
     }
 
     public EstadoPedido getEstadoPedido() {
@@ -51,8 +60,9 @@ public class Pedido {
     public String toString() {
         return "Pedido{" +
                 "codigoPedido=" + codigoPedido +
-                ", fecha='" + fecha + '\'' +
-                ", entrega=" + entrega +
+                ", fecha=" + fecha +
+                ", modalidadEntrega=" + modalidadEntrega +
+                ", servicioDomicilio=" + iservicioDomicilio +
                 ", estadoPedido=" + estadoPedido +
                 '}';
     }
