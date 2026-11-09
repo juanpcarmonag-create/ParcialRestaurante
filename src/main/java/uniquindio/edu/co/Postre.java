@@ -53,19 +53,17 @@ public class Postre extends Producto{
         }
         return precioFinal;
     }
-
     @Override
-    public boolean verificarCondiciones() {
-        boolean aprobado=false;
-        if (refrigeracion==true) {
-            if ((pesoGramos <= 500 && pesoGramos >= 80)&&(tempAlmacenamiento<=6&&tempAlmacenamiento>=0)) {
-                aprobado=true;
-            }
-        }else {
-            if ((pesoGramos <= 500 && pesoGramos >= 80)&&(tempAlmacenamiento<=30&&tempAlmacenamiento>=15)) {
-                aprobado=true;
-            }
+    public boolean verificarCondicionesCalidad() {
+        boolean pesoValido = this.pesoGramos >= 80 && this.pesoGramos <= 500;
+        boolean tempValida = false;
+
+        if (this.refrigeracion) {
+            tempValida = this.tempAlmacenamiento >= 0 && this.tempAlmacenamiento <= 6;
+        } else {
+            tempValida = this.tempAlmacenamiento >= 15 && this.tempAlmacenamiento <= 30;
         }
-        return aprobado;
+
+        return pesoValido && tempValida;
     }
 }

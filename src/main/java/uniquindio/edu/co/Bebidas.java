@@ -63,19 +63,17 @@ public class Bebidas extends Producto{
         }
         return precioFinal;
     }
-
     @Override
-    public boolean verificarCondiciones() {
-        boolean aprobado=false;
-        if (tipoBebida==TipoBebida.CALIENTE) {
-            if ((volumenML <= 1500 && volumenML >= 150)&&(temperatura<=85&&temperatura>=55)) {
-                aprobado=true;
-            }
-        }else {
-            if ((volumenML <= 1500 && volumenML >= 150)&&(temperatura<=10&&temperatura>=0)) {
-                aprobado=true;
-            }
+    public boolean verificarCondicionesCalidad() {
+        boolean volumenValido = this.volumenML >= 150 && this.volumenML <= 1500;
+        boolean tempValida = false;
+
+        if (this.tipoBebida == TipoBebida.FRIA) {
+            tempValida = this.temperatura >= 0 && this.temperatura <= 10;
+        } else if (this.tipoBebida == TipoBebida.CALIENTE) {
+            tempValida = this.temperatura >= 55 && this.temperatura <= 85;
         }
-        return aprobado;
+
+        return volumenValido && tempValida;
     }
 }

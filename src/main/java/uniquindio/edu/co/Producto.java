@@ -69,6 +69,5 @@ public abstract class Producto{
         return getPrecioBase();
     }
 
-    public abstract boolean verificarCondiciones();
-
+    public abstract boolean verificarCondicionesCalidad();
 }

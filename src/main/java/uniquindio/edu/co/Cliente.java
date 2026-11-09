@@ -55,9 +55,6 @@ public class Cliente {
         this.direccionCliente = direccionCliente;
     }
 
-
-
-
     @Override
     public String toString() {
         return "Cliente{" +
