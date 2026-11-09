@@ -53,4 +53,19 @@ public class Postre extends Producto{
         }
         return precioFinal;
     }
+
+    @Override
+    public boolean verificarCondiciones() {
+        boolean aprobado=false;
+        if (refrigeracion==true) {
+            if ((pesoGramos <= 500 && pesoGramos >= 80)&&(tempAlmacenamiento<=6&&tempAlmacenamiento>=0)) {
+                aprobado=true;
+            }
+        }else {
+            if ((pesoGramos <= 500 && pesoGramos >= 80)&&(tempAlmacenamiento<=30&&tempAlmacenamiento>=15)) {
+                aprobado=true;
+            }
+        }
+        return aprobado;
+    }
 }

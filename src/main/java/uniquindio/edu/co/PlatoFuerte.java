@@ -3,6 +3,7 @@ package uniquindio.edu.co;
 public class PlatoFuerte extends Producto{
     private int pesoGramos;
     private TipoPreparacion tipoPreparacion;
+
     private boolean CoccionCompleta;
 
     public PlatoFuerte(int codigoProducto, String nombreProducto, String descripcion, double precioBase, int tiempoPreparacion, int pesoGramos, TipoPreparacion tipoPreparacion, boolean coccionCompleta) {
@@ -49,5 +50,14 @@ public class PlatoFuerte extends Producto{
     public double PrecioFinal() {
         double precioFinal=getPrecioBase()+(getPrecioBase()*0.20);
         return precioFinal;
+    }
+
+    @Override
+    public boolean verificarCondiciones() {
+        boolean aprobado=false;
+        if((pesoGramos<=900&pesoGramos>=200)&&(getTiempoPreparacion()<=60&&getTiempoPreparacion()>=10)&&(CoccionCompleta==true)){
+            aprobado=true;
+        }
+        return aprobado;
     }
 }

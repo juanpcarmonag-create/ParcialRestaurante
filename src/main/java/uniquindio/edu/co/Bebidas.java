@@ -63,4 +63,19 @@ public class Bebidas extends Producto{
         }
         return precioFinal;
     }
+
+    @Override
+    public boolean verificarCondiciones() {
+        boolean aprobado=false;
+        if (tipoBebida==TipoBebida.CALIENTE) {
+            if ((volumenML <= 1500 && volumenML >= 150)&&(temperatura<=85&&temperatura>=55)) {
+                aprobado=true;
+            }
+        }else {
+            if ((volumenML <= 1500 && volumenML >= 150)&&(temperatura<=10&&temperatura>=0)) {
+                aprobado=true;
+            }
+        }
+        return aprobado;
+    }
 }

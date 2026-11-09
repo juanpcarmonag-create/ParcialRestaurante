@@ -68,4 +68,7 @@ public abstract class Producto{
     public double PrecioFinal(){
         return getPrecioBase();
     }
+
+    public abstract boolean verificarCondiciones();
+
 }
