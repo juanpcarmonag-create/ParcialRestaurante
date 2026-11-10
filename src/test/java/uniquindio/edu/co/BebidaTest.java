@@ -10,10 +10,13 @@ public class BebidaTest {
 
     @Test
     void productosTenganLosDatosCorrectos() {
-        assertEquals("jugo de fresa", bebida.getNombreProducto());
-        assertEquals(8500.0, bebida.getPrecioBase());
-        assertEquals(500, bebida.getVolumenML());
-        assertEquals(false, bebida.getPreparacionEspecial());
+        assertEquals("Jugo de fresa", bebida.getNombreProducto());
+        assertEquals(5000, bebida.getPrecioBase());
+        assertEquals(15,bebida.getTiempoPreparacion());
+        assertEquals(400, bebida.getVolumenML());
+        assertEquals(5,bebida.getTemperatura());
+        assertEquals(TipoBebida.FRIA,bebida.getTipoBebida());
+        assertEquals(true, bebida.getPreparacionEspecial());
     }
 
     @Test
@@ -34,8 +37,7 @@ public class BebidaTest {
     @Test
     void noDebePermitirCodigoMenorDe1() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new Bebidas(0001, "Jugo de fresa", "jugo de fresa en agua o leche", 5000, 15, 400, 5, TipoBebida.FRIA, true);
+            new Bebidas(0, "Jugo de fresa", "jugo de fresa en agua o leche", 5000, 15, 400, 5, TipoBebida.FRIA, true);
         });
-
     }
 }

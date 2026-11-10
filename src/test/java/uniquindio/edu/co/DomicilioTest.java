@@ -30,4 +30,5 @@ public class DomicilioTest {
             assertTrue(domicilio.getDistancia()<=12);
         }
     }
+
 }
