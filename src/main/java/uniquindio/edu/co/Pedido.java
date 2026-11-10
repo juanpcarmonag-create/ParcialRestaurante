@@ -9,8 +9,6 @@ public class Pedido {
     private LocalDate fecha;
     private Cliente cliente;
     private ModalidadEntrega modalidadEntrega;
-    private IServicioDomicilio iservicioDomicilio;
-    private double distanciaKm;
     private EstadoPedido estadoPedido;
     private List<DetallePedido> detalles;
 
@@ -25,13 +23,6 @@ public class Pedido {
         this.modalidadEntrega = modalidadEntrega;
         this.estadoPedido = EstadoPedido.PENDIENTE;
         this.detalles = new ArrayList<>();
-        this.distanciaKm = 0.0;
-    }
-
-    public Pedido(int codigoPedido, LocalDate fecha, Cliente cliente, int distanciaKm, EmpresaDomicilio empresa) {
-        this(codigoPedido, fecha, cliente, ModalidadEntrega.DOMICILIO);
-        this.distanciaKm = distanciaKm;
-        this.iservicioDomicilio = empresa.getServicio();
     }
 
     public void agregarDetalle(Producto producto, int cantidad) {
@@ -47,88 +38,27 @@ public class Pedido {
     }
 
     public double calcularTotalPedido() {
-        double total = calcularTotalProductos();
-        if (this.modalidadEntrega == ModalidadEntrega.DOMICILIO && this.iservicioDomicilio != null) {
-            total += this.iservicioDomicilio.calcularCostoDomicilio(this.distanciaKm);
-        }
-        return total;
-    }
-
-    public int getCodigoPedido() {
-        return codigoPedido;
-    }
-
-    public int getCodigo() {
-        return codigoPedido;
-    }
-
-    public void setCodigoPedido(int codigoPedido) {
-        this.codigoPedido = codigoPedido;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public ModalidadEntrega getModalidadEntrega() {
-        return modalidadEntrega;
-    }
-
-    public void setModalidadEntrega(ModalidadEntrega modalidadEntrega) {
-        this.modalidadEntrega = modalidadEntrega;
-    }
-
-    public IServicioDomicilio getIServicioDomicilio() {
-        return iservicioDomicilio;
-    }
-
-    public void setServicioDomicilio(IServicioDomicilio servicioDomicilio) {
-        this.iservicioDomicilio = servicioDomicilio;
-    }
-
-    public double getDistanciaKm() {
-        return distanciaKm;
-    }
-
-    public void setDistanciaKm(double distanciaKm) {
-        this.distanciaKm = distanciaKm;
-    }
-
-    public EstadoPedido getEstadoPedido() {
-        return estadoPedido;
-    }
-
-    public EstadoPedido getEstado() {
-        return estadoPedido;
-    }
-
-    public void setEstadoPedido(EstadoPedido estadoPedido) {
-        this.estadoPedido = estadoPedido;
-    }
-
-    public void setEstado(EstadoPedido estadoPedido) {
-        this.estadoPedido = estadoPedido;
+        return calcularTotalProductos();
     }
 
     public double calcularTotal() {
         return calcularTotalPedido();
     }
 
-    public List<DetallePedido> getDetalles() {
-        return detalles;
-    }
+    public int getCodigoPedido() { return codigoPedido; }
+    public int getCodigo() { return codigoPedido; }
+    public void setCodigoPedido(int codigoPedido) { this.codigoPedido = codigoPedido; }
+    public LocalDate getFecha() { return fecha; }
+    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
+    public ModalidadEntrega getModalidadEntrega() { return modalidadEntrega; }
+    public void setModalidadEntrega(ModalidadEntrega modalidadEntrega) { this.modalidadEntrega = modalidadEntrega; }
+    public EstadoPedido getEstadoPedido() { return estadoPedido; }
+    public EstadoPedido getEstado() { return estadoPedido; }
+    public void setEstadoPedido(EstadoPedido estadoPedido) { this.estadoPedido = estadoPedido; }
+    public void setEstado(EstadoPedido estadoPedido) { this.estadoPedido = estadoPedido; }
+    public List<DetallePedido> getDetalles() { return detalles; }
 
     @Override
     public String toString() {
@@ -137,7 +67,6 @@ public class Pedido {
                 ", fecha=" + fecha +
                 ", cliente=" + (cliente != null ? cliente.getNombreCliente() : "Sin cliente") +
                 ", modalidadEntrega=" + modalidadEntrega +
-                ", servicioDomicilio=" + iservicioDomicilio +
                 ", estadoPedido=" + estadoPedido +
                 ", totalPedido=" + calcularTotalPedido() +
                 '}';

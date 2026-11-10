@@ -10,19 +10,6 @@ public class PlatoFuerte extends Producto{
         this.pesoGramos = pesoGramos;
         this.tipoPreparacion = tipoPreparacion;
         CoccionCompleta = coccionCompleta;
-
-        if (pesoGramos<200 || pesoGramos>900){
-            throw new IllegalArgumentException("El peso debe estar entre 200 y 900 gramos");
-        }
-
-        if (tiempoPreparacion<10 || tiempoPreparacion>60){
-            throw new IllegalArgumentException("El tiempo de preparacion debe ser entre 10 y 60 minutos");
-        }
-
-        if (coccionCompleta==false){
-            throw new IllegalArgumentException("La coccion del plato no esta aprobada");
-        }
-
         if (precioBase<=0){
             throw new IllegalArgumentException("El precio del plato debe ser positivo y mayor a 0");
         }

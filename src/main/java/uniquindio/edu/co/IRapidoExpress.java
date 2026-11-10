@@ -1,6 +1,6 @@
 package uniquindio.edu.co;
 
-public interface IRapidoExpress {
+public interface    IRapidoExpress {
 
     static int tarifaBase=5000;
     static int costoKm=1500;

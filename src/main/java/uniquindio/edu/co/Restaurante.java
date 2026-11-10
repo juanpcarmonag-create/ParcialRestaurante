@@ -62,6 +62,19 @@ public class Restaurante {
         return disponibles;
     }
 
+    public boolean registrarPedido(Pedido pedido) {
+        if (pedido == null || pedido.getCliente() == null) {
+            return false;
+        }
+        for (Pedido p : pedidos) {
+            if (p.getCodigoPedido() == pedido.getCodigoPedido()) {
+                return false;
+            }
+        }
+        pedidos.add(pedido);
+        return true;
+    }
+
     public boolean confirmarPedido(Pedido pedido) {
         if (pedido == null || pedido.getEstadoPedido() != EstadoPedido.PENDIENTE) {
             return false;
@@ -71,29 +84,20 @@ public class Restaurante {
                 return false;
             }
         }
-
         if (pedido.getCliente() == null || !clientes.contains(pedido.getCliente())) {
             return false;
         }
-
         if (pedido.getDetalles().isEmpty()) {
             return false;
         }
         for (DetallePedido detalle : pedido.getDetalles()) {
-            if (detalle.getCantidad() <= 0) {
-                return false;
-            }
-            if (!menu.contains(detalle.getProducto())) {
-                return false;
-            }
-            if (!detalle.getProducto().verificarCondicionesCalidad()) {
+            if (detalle.getCantidad() <= 0 || !menu.contains(detalle.getProducto())
+                    || !detalle.getProducto().verificarCondicionesCalidad()) {
                 return false;
             }
         }
-
-        if (pedido.getModalidadEntrega() == ModalidadEntrega.DOMICILIO) {
-            if (pedido.getIServicioDomicilio() == null ||
-                    !pedido.getIServicioDomicilio().aceptaEntrega(pedido.getDistanciaKm())) {
+        if (pedido instanceof Domicilio domicilio) {
+            if (!domicilio.aceptarPedido()) {
                 return false;
             }
         }
@@ -103,6 +107,15 @@ public class Restaurante {
             pedidos.add(pedido);
         }
         return true;
+    }
+
+    public boolean confirmarPedidoPorCodigo(int codigoPedido) {
+        for (Pedido p : pedidos) {
+            if (p.getCodigoPedido() == codigoPedido) {
+                return confirmarPedido(p);
+            }
+        }
+        return false;
     }
 
     public boolean marcarPedidoEntregado(int codigoPedido) {
@@ -131,6 +144,15 @@ public class Restaurante {
         return false;
     }
 
+    public EstadoPedido consultarEstadoPedido(int codigoPedido) {
+        for (Pedido p : pedidos) {
+            if (p.getCodigoPedido() == codigoPedido) {
+                return p.getEstadoPedido();
+            }
+        }
+        return null;
+    }
+
     public List<Pedido> consultarPedidosPorCliente(int documentoCliente) {
         List<Pedido> historialCliente = new ArrayList<>();
         for (Pedido p : pedidos) {
@@ -144,17 +166,28 @@ public class Restaurante {
     public double calcularIngresosNetos() {
         double ingresos = 0;
         for (Pedido p : pedidos) {
-            if (p.getEstadoPedido() != EstadoPedido.CANCELADO) {
+            if (p.getEstadoPedido() == EstadoPedido.CONFIRMADO || p.getEstadoPedido() == EstadoPedido.ENTREGADO) {
                 ingresos += p.calcularTotalProductos();
             }
         }
         return ingresos;
     }
 
+    public double calcularIngresosDomicilios() {
+        double total = 0;
+        for (Pedido p : pedidos) {
+            if ((p.getEstadoPedido() == EstadoPedido.CONFIRMADO || p.getEstadoPedido() == EstadoPedido.ENTREGADO)
+                    && p instanceof Domicilio domicilio) {
+                total += domicilio.calcularCostoDistancia();
+            }
+        }
+        return total;
+    }
+
     public Producto obtenerProductoMasVendido() {
         Map<Producto, Integer> conteo = new HashMap<>();
         for (Pedido p : pedidos) {
-            if (p.getEstadoPedido() != EstadoPedido.CANCELADO) {
+            if (p.getEstadoPedido() == EstadoPedido.CONFIRMADO || p.getEstadoPedido() == EstadoPedido.ENTREGADO) {
                 for (DetallePedido d : p.getDetalles()) {
                     conteo.put(d.getProducto(), conteo.getOrDefault(d.getProducto(), 0) + d.getCantidad());
                 }
@@ -178,7 +211,7 @@ public class Restaurante {
         double ingresosPostres = 0;
 
         for (Pedido p : pedidos) {
-            if (p.getEstadoPedido() != EstadoPedido.CANCELADO) {
+            if (p.getEstadoPedido() == EstadoPedido.CONFIRMADO || p.getEstadoPedido() == EstadoPedido.ENTREGADO) {
                 for (DetallePedido d : p.getDetalles()) {
                     Producto prod = d.getProducto();
                     double subtotal = d.calcularSubtotal();
@@ -194,54 +227,13 @@ public class Restaurante {
         }
 
         if (ingresosPlatos >= ingresosBebidas && ingresosPlatos >= ingresosPostres && ingresosPlatos > 0) {
-            return "Platos Fuertes ($" + ingresosPlatos + ")";
+            return String.format("Platos Fuertes ($%,.2f)", ingresosPlatos);
         } else if (ingresosBebidas >= ingresosPlatos && ingresosBebidas >= ingresosPostres && ingresosBebidas > 0) {
-            return "Bebidas ($" + ingresosBebidas + ")";
+            return String.format("Bebidas ($%,.2f)", ingresosBebidas);
         } else if (ingresosPostres > 0) {
-            return "Postres ($" + ingresosPostres + ")";
+            return String.format("Postres ($%,.2f)", ingresosPostres);
         }
         return "Sin ventas registradas";
-    }
-
-    public boolean registrarPedido(Pedido pedido) {
-        if (pedido == null || pedido.getCliente() == null) {
-            return false;
-        }
-        for (Pedido p : pedidos) {
-            if (p.getCodigoPedido() == pedido.getCodigoPedido()) {
-                return false;
-            }
-        }
-        pedidos.add(pedido);
-        return true;
-    }
-
-    public boolean confirmarPedidoPorCodigo(int codigoPedido) {
-        for (Pedido p : pedidos) {
-            if (p.getCodigoPedido() == codigoPedido) {
-                return confirmarPedido(p);
-            }
-        }
-        return false;
-    }
-
-    public EstadoPedido consultarEstadoPedido(int codigoPedido) {
-        for (Pedido p : pedidos) {
-            if (p.getCodigoPedido() == codigoPedido) {
-                return p.getEstadoPedido();
-            }
-        }
-        return null;
-    }
-
-    public double calcularIngresosDomicilios() {
-        double total = 0;
-        for (Pedido p : pedidos) {
-            if (p.getModalidadEntrega() == ModalidadEntrega.DOMICILIO && p.getIServicioDomicilio() != null) {
-                total += p.getIServicioDomicilio().calcularCostoDomicilio(p.getDistanciaKm());
-            }
-        }
-        return total;
     }
 
     public String getNombre() { return nombre; }

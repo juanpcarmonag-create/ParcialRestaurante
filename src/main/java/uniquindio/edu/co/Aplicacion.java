@@ -17,48 +17,24 @@ public class Aplicacion {
         new Aplicacion().iniciar();
     }
 
-
     public void iniciar() {
         int opcion;
         do {
             mostrarMenu();
             opcion = leerEntero("Opción: ");
             switch (opcion) {
-                case 1:
-                    registrarProducto();
-                    break;
-                case 2:
-                    registrarCliente();
-                    break;
-                case 3:
-                    consultarProductosDisponibles();
-                    break;
-                case 4:
-                    consultarProductosRechazados();
-                    break;
-                case 5:
-                    crearPedido();
-                    break;
-                case 6:
-                    confirmarPedido();
-                    break;
-                case 7:
-                    actualizarEstadoPedido();
-                    break;
-                case 8:
-                    consultarEstadoPedido();
-                    break;
-                case 9:
-                    consultarPedidosPorCliente();
-                    break;
-                case 10:
-                    mostrarReportes();
-                    break;
-                case 0:
-                    System.out.println("Gracias por usar Sabor & Tradición.");
-                    break;
-                default:
-                    System.out.println("Opción no válida.");
+                case 1 -> registrarProducto();
+                case 2 -> registrarCliente();
+                case 3 -> consultarProductosDisponibles();
+                case 4 -> consultarProductosRechazados();
+                case 5 -> crearPedido();
+                case 6 -> confirmarPedido();
+                case 7 -> actualizarEstadoPedido();
+                case 8 -> consultarEstadoPedido();
+                case 9 -> consultarPedidosPorCliente();
+                case 10 -> mostrarReportes();
+                case 0 -> System.out.println("Gracias por usar Sabor & Tradición.");
+                default -> System.out.println("Opción no válida.");
             }
         } while (opcion != 0);
     }
@@ -78,7 +54,6 @@ public class Aplicacion {
         System.out.println(" 0. Salir");
     }
 
-
     private void registrarProducto() {
         System.out.println("\nTipo de producto:");
         System.out.println("1. Plato fuerte");
@@ -86,7 +61,7 @@ public class Aplicacion {
         System.out.println("3. Postre");
         int tipo = leerEnteroEnRango("Seleccione: ", 1, 3);
 
-        int codigo = leerEntero("Código del producto: ");
+        int codigo = leerEnteroPositivo("Código del producto: ");
         String nombre = leerTextoNoVacio("Nombre: ");
         String descripcion = leerTextoNoVacio("Descripción: ");
         double precioBase = leerDoublePositivo("Precio base: ");
@@ -124,20 +99,23 @@ public class Aplicacion {
     }
 
     private void registrarCliente() {
-        int identificacion = leerEntero("Número de documento: ");
+        int identificacion = leerEnteroPositivo("Número de documento: ");
         String nombre = leerTextoNoVacio("Nombre completo: ");
-        int telefono = leerEntero("Teléfono: ");
+        int telefono = leerEnteroPositivo("Teléfono: ");
         String correo = leerTextoNoVacio("Correo electrónico: ");
         String direccion = leerTextoNoVacio("Dirección de residencia: ");
 
-        Cliente cliente = new Cliente(identificacion, nombre, telefono, correo, direccion);
-        if (restaurante.registrarCliente(cliente)) {
-            System.out.println("Cliente registrado correctamente.");
-        } else {
-            System.out.println("No se registró: ya existe un cliente con el documento " + identificacion + ".");
+        try {
+            Cliente cliente = new Cliente(identificacion, nombre, telefono, correo, direccion);
+            if (restaurante.registrarCliente(cliente)) {
+                System.out.println("Cliente registrado correctamente.");
+            } else {
+                System.out.println("No se registró: ya existe un cliente con el documento " + identificacion + ".");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error al registrar cliente: " + e.getMessage());
         }
     }
-
 
     private void consultarProductosDisponibles() {
         mostrarProductos("PRODUCTOS DISPONIBLES (cumplen calidad)", restaurante.consultarProductosDisponibles());
@@ -159,23 +137,22 @@ public class Aplicacion {
     }
 
     private void imprimirProducto(Producto p) {
-        System.out.printf("#%d | %s | %s | %s | prep.: %s min | base: $%,.2f | VENTA: $%,.2f",
+        System.out.printf("#%d | %s | %s | %s | prep.: %d min | base: $%,.2f | VENTA: $%,.2f",
                 p.getCodigo(), p.getNombre(), p.getClass().getSimpleName(), p.getDescripcion(),
                 p.getTiempoEstimado(), p.getPrecioBase(), p.precioFinal());
         if (p instanceof PlatoFuerte plato) {
             System.out.printf(" | %.0f g | %s | cocción superada: %s",
                     plato.getPeso(), plato.getTipoPreparacion(), siNo(plato.getCoccionSuperada()));
         } else if (p instanceof Bebidas bebida) {
-            System.out.printf(" | %.0f ml | %.1f °C | %s | prep. especial: %s",
+            System.out.printf(" | %d ml | %d °C | %s | prep. especial: %s",
                     bebida.getVolumenML(), bebida.getTemperatura(), bebida.getTipoBebida(),
                     siNo(bebida.getPreparacionEspecial()));
         } else if (p instanceof Postre postre) {
-            System.out.printf(" | %.0f g | almacenado a %.1f °C | refrigeración: %s",
+            System.out.printf(" | %.0f g | almacenado a %d °C | refrigeración: %s",
                     postre.getPeso(), postre.getTempAlmacenamiento(), siNo(postre.getRefrigeracion()));
         }
         System.out.println();
     }
-
 
     private void crearPedido() {
         Cliente cliente = buscarCliente(leerEntero("Documento del cliente: "));
@@ -183,7 +160,7 @@ public class Aplicacion {
             System.out.println("No existe un cliente registrado con ese documento.");
             return;
         }
-        int codigo = leerEntero("Código del pedido: ");
+        int codigo = leerEnteroPositivo("Código del pedido: ");
         if (buscarPedido(codigo) != null) {
             System.out.println("Ya existe un pedido con el código " + codigo + ".");
             return;
@@ -224,20 +201,18 @@ public class Aplicacion {
         }
     }
 
-
     private Domicilio crearDomicilio(int codigo, Cliente cliente) {
         while (true) {
             System.out.println("Empresa de transporte (0 para cancelar):");
-            EmpresaDomicilio[] empresas = EmpresaDomicilio.values();
-            for (int i = 0; i < empresas.length; i++) {
-                System.out.println((i + 1) + ". " + empresas[i]);
-            }
-            int opcion = leerEnteroEnRango("Seleccione: ", 0, empresas.length);
+            System.out.println("1. Rápido Express");
+            System.out.println("2. EntregaSegura");
+            int opcion = leerEnteroEnRango("Seleccione: ", 0, 2);
             if (opcion == 0) {
                 return null;
             }
+            String empresa = (opcion == 1) ? "Rápido Express" : "EntregaSegura";
             int distancia = leerEnteroPositivo("Distancia en kilómetros: ");
-            Domicilio domicilio = new Domicilio(codigo, LocalDate.now(), cliente, distancia, empresas[opcion - 1]);
+            Domicilio domicilio = new Domicilio(codigo, LocalDate.now(), cliente, distancia, empresa);
 
             if (domicilio.aceptarPedido()) {
                 System.out.printf("%s acepta el recorrido. Costo del domicilio: $%,.2f%n",
@@ -267,7 +242,6 @@ public class Aplicacion {
                     : "  (ADVERTENCIA: no cumple calidad, el pedido no podrá confirmarse)"));
         }
     }
-
 
     private void confirmarPedido() {
         int codigo = leerEntero("Código del pedido a confirmar: ");
@@ -305,7 +279,6 @@ public class Aplicacion {
         System.out.println(estado == null ? "No existe un pedido con ese código." : "Estado del pedido #" + codigo + ": " + estado);
     }
 
-
     private void consultarPedidosPorCliente() {
         int identificacion = leerEntero("Documento del cliente: ");
         Cliente cliente = buscarCliente(identificacion);
@@ -340,8 +313,6 @@ public class Aplicacion {
         System.out.printf("   TOTAL DEL PEDIDO: $%,.2f%n", pedido.calcularTotal());
     }
 
-
-
     private void mostrarReportes() {
         System.out.println("\n========== REPORTES DE VENTAS ==========");
         System.out.printf("Ingresos del restaurante (sin domicilios): $%,.2f%n", restaurante.calcularIngresosNetos());
@@ -352,7 +323,6 @@ public class Aplicacion {
                 + " (código " + masVendido.getCodigo() + ")"));
         System.out.println("Categoría con mayores ingresos: " + restaurante.obtenerCategoriaMayoresIngresos());
     }
-
 
     private Cliente buscarCliente(int identificacion) {
         for (Cliente c : restaurante.getClientes()) {
@@ -380,7 +350,6 @@ public class Aplicacion {
         }
         return null;
     }
-
 
     private String leerTexto(String mensaje) {
         System.out.print(mensaje);
