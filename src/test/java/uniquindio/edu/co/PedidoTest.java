@@ -15,5 +15,4 @@ public class PedidoTest {
         assertThrows(IllegalArgumentException.class,()->{new Pedido(-12345,null,cliente,ModalidadEntrega.RESTAURANTE);});
     }
 
-    
 }

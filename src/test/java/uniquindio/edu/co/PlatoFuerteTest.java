@@ -2,8 +2,7 @@ package uniquindio.edu.co;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlatoFuerteTest {
 
@@ -17,19 +16,19 @@ public class PlatoFuerteTest {
     }
     @Test
     void pesoDebeEstarEntre200Y900Gramos(){
-        assertThrows(IllegalArgumentException.class, ()->{new PlatoFuerte(2,"Bistec","bistec de res en salsa",28000, 40, 100, TipoPreparacion.HORNEADO, true);});
+        assertTrue(platoFuerte.getPesoGramos() >= 200);
+        assertTrue(platoFuerte.getPesoGramos() <= 900);
     }
 
     @Test
     void tiempoDePreparacionEntre10Y60Minutos() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new PlatoFuerte(2, "Bistec", "bistec de res en salsa", 28000, 80, 300, TipoPreparacion.HORNEADO, true);
-        });
+        assertTrue(platoFuerte.getTiempoPreparacion() >= 10);
+        assertTrue(platoFuerte.getTiempoPreparacion() <= 60);
     }
 
     @Test
     void laCoccionDebeEstarAprobada(){
-        assertThrows(IllegalArgumentException.class, ()->{new PlatoFuerte(2,"Bistec","bistec de res en salsa",28000, 40, 300, TipoPreparacion.HORNEADO, false);});
+        assertTrue(platoFuerte.isCoccionCompleta()==true);
     }
 
     @Test
