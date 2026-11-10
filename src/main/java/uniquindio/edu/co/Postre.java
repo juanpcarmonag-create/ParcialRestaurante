@@ -10,6 +10,30 @@ public class Postre extends Producto{
         this.pesoGramos = pesoGramos;
         this.tempAlmacenamiento = tempAlmacenamiento;
         this.refrigeracion = refrigeracion;
+
+        if (pesoGramos<80 || pesoGramos>500){
+            throw new IllegalArgumentException("El peso debe estar entre 200 y 900 gramos");
+        }
+
+        if(refrigeracion==true){
+            if(tempAlmacenamiento<0||tempAlmacenamiento>6){
+                throw new IllegalArgumentException("la temperatura de almacenamiento no es adecuada para productos que requieren refrigeracion");
+            }
+        }
+
+        if(refrigeracion==false) {
+            if (tempAlmacenamiento < 15 || tempAlmacenamiento > 30) {
+                throw new IllegalArgumentException("la temperatura de almacenamiento no es adecuada para productos que no requieren refrigeracion");
+            }
+        }
+
+        if (precioBase<=0){
+            throw new IllegalArgumentException("El precio del postre debe ser positivo y mayor a 0");
+        }
+
+        if(codigoProducto<1){
+            throw new IllegalArgumentException("el codigo no puede ser menor a 1");
+        }
     }
 
     public int getPesoGramos() {

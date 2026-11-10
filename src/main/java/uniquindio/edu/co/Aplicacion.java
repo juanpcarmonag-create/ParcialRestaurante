@@ -167,7 +167,7 @@ public class Aplicacion {
                     plato.getPeso(), plato.getTipoPreparacion(), siNo(plato.getCoccionSuperada()));
         } else if (p instanceof Bebidas bebida) {
             System.out.printf(" | %.0f ml | %.1f °C | %s | prep. especial: %s",
-                    bebida.getVolumen(), bebida.getTemperatura(), bebida.getTipoBebida(),
+                    bebida.getVolumenML(), bebida.getTemperatura(), bebida.getTipoBebida(),
                     siNo(bebida.getPreparacionEspecial()));
         } else if (p instanceof Postre postre) {
             System.out.printf(" | %.0f g | almacenado a %.1f °C | refrigeración: %s",

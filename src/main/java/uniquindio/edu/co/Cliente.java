@@ -13,6 +13,23 @@ public class Cliente {
         this.telefono = telefono;
         this.correo = correo;
         this.direccionCliente = direccionCliente;
+
+        if(nombreCliente.contains("1")||nombreCliente.contains("2")||nombreCliente.contains("3")||nombreCliente.contains("4")||nombreCliente.contains("5")||nombreCliente.contains("6")||
+                nombreCliente.contains("7")||nombreCliente.contains("8")||nombreCliente.contains("9")||nombreCliente.contains("0")){
+            throw new IllegalArgumentException("El nombre del cliente no permite numeros");
+        }
+
+        if(!correo.contains("@")){
+            throw new IllegalArgumentException("El correo debe tener un arroba");
+        }
+
+        if(documento<=0){
+            throw new IllegalArgumentException("El documento no puede ser negativo");
+        }
+
+        if(telefono<=0){
+            throw new IllegalArgumentException("El telefono no puede ser negativo");
+        }
     }
 
     public int getDocumento() {

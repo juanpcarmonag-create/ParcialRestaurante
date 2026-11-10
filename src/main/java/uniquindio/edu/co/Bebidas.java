@@ -12,6 +12,10 @@ public class Bebidas extends Producto{
         this.temperatura = temperatura;
         this.tipoBebida = tipoBebida;
         PreparacionEspecial = preparacionEspecial;
+
+        if(codigoProducto<1){
+            throw new IllegalArgumentException("el codigo no puede ser menor a 1");
+        }
     }
 
     public boolean getPreparacionEspecial() {
@@ -23,10 +27,6 @@ public class Bebidas extends Producto{
     }
 
     public int getVolumenML() {
-        return volumenML;
-    }
-
-    public double getVolumen() {
         return volumenML;
     }
 
