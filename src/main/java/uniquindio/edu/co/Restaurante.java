@@ -216,7 +216,7 @@ public class Restaurante {
         return true;
     }
 
-    public boolean confirmarPedido(int codigoPedido) {
+    public boolean confirmarPedidoPorCodigo(int codigoPedido) {
         for (Pedido p : pedidos) {
             if (p.getCodigoPedido() == codigoPedido) {
                 return confirmarPedido(p);

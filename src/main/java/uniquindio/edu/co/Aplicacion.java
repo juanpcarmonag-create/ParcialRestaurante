@@ -276,7 +276,7 @@ public class Aplicacion {
             System.out.println("No existe un pedido con ese código.");
             return;
         }
-        if (restaurante.confirmarPedido(codigo)) {
+        if (restaurante.confirmarPedidoPorCodigo(codigo)) {
             System.out.printf("Pedido #%d CONFIRMADO. Valor total: $%,.2f%n", codigo, pedido.calcularTotal());
         } else {
             System.out.println("No se pudo confirmar el pedido #" + codigo + ". Estado actual: " + pedido.getEstado());
