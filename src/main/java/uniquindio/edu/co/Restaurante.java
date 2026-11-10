@@ -63,11 +63,11 @@ public class Restaurante {
     }
 
     public boolean confirmarPedido(Pedido pedido) {
-        if (pedido.getEstadoPedido() != EstadoPedido.PENDIENTE) {
+        if (pedido == null || pedido.getEstadoPedido() != EstadoPedido.PENDIENTE) {
             return false;
         }
         for (Pedido p : pedidos) {
-            if (p.getCodigoPedido() == pedido.getCodigoPedido()) {
+            if (p != pedido && p.getCodigoPedido() == pedido.getCodigoPedido()) {
                 return false;
             }
         }
@@ -99,7 +99,9 @@ public class Restaurante {
         }
 
         pedido.setEstadoPedido(EstadoPedido.CONFIRMADO);
-        pedidos.add(pedido);
+        if (!pedidos.contains(pedido)) {
+            pedidos.add(pedido);
+        }
         return true;
     }
 
@@ -199,6 +201,47 @@ public class Restaurante {
             return "Postres ($" + ingresosPostres + ")";
         }
         return "Sin ventas registradas";
+    }
+
+    public boolean registrarPedido(Pedido pedido) {
+        if (pedido == null || pedido.getCliente() == null) {
+            return false;
+        }
+        for (Pedido p : pedidos) {
+            if (p.getCodigoPedido() == pedido.getCodigoPedido()) {
+                return false;
+            }
+        }
+        pedidos.add(pedido);
+        return true;
+    }
+
+    public boolean confirmarPedido(int codigoPedido) {
+        for (Pedido p : pedidos) {
+            if (p.getCodigoPedido() == codigoPedido) {
+                return confirmarPedido(p);
+            }
+        }
+        return false;
+    }
+
+    public EstadoPedido consultarEstadoPedido(int codigoPedido) {
+        for (Pedido p : pedidos) {
+            if (p.getCodigoPedido() == codigoPedido) {
+                return p.getEstadoPedido();
+            }
+        }
+        return null;
+    }
+
+    public double calcularIngresosDomicilios() {
+        double total = 0;
+        for (Pedido p : pedidos) {
+            if (p.getModalidadEntrega() == ModalidadEntrega.DOMICILIO && p.getIServicioDomicilio() != null) {
+                total += p.getIServicioDomicilio().calcularCostoDomicilio(p.getDistanciaKm());
+            }
+        }
+        return total;
     }
 
     public String getNombre() { return nombre; }

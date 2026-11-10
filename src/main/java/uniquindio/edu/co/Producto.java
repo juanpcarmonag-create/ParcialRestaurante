@@ -19,11 +19,19 @@ public abstract class Producto{
         return codigoProducto;
     }
 
+    public int getCodigo() {
+        return codigoProducto;
+    }
+
     public void setCodigoProducto(int codigoProducto) {
         this.codigoProducto = codigoProducto;
     }
 
     public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public String getNombre() {
         return nombreProducto;
     }
 
@@ -51,8 +59,16 @@ public abstract class Producto{
         return tiempoPreparacion;
     }
 
+    public int getTiempoEstimado() {
+        return tiempoPreparacion;
+    }
+
     public void setTiempoPreparacion(int tiempoPreparacion) {
         this.tiempoPreparacion = tiempoPreparacion;
+    }
+
+    public double precioFinal() {
+        return PrecioFinal();
     }
 
     @Override

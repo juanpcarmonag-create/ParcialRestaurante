@@ -26,6 +26,10 @@ public class Bebidas extends Producto{
         return volumenML;
     }
 
+    public double getVolumen() {
+        return volumenML;
+    }
+
     public void setVolumenML(int volumenML) {
         this.volumenML = volumenML;
     }

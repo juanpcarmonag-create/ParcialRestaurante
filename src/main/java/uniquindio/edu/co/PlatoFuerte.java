@@ -16,6 +16,10 @@ public class PlatoFuerte extends Producto{
         return pesoGramos;
     }
 
+    public double getPeso() {
+        return pesoGramos;
+    }
+
     public void setPesoGramos(int pesoGramos) {
         this.pesoGramos = pesoGramos;
     }
@@ -29,6 +33,10 @@ public class PlatoFuerte extends Producto{
     }
 
     public boolean isCoccionCompleta() {
+        return CoccionCompleta;
+    }
+
+    public boolean getCoccionSuperada() {
         return CoccionCompleta;
     }
 

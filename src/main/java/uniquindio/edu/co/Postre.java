@@ -16,6 +16,10 @@ public class Postre extends Producto{
         return pesoGramos;
     }
 
+    public double getPeso() {
+        return pesoGramos;
+    }
+
     public void setPesoGramos(int pesoGramos) {
         this.pesoGramos = pesoGramos;
     }

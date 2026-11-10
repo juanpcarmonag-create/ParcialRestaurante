@@ -14,6 +14,10 @@ public class Pedido {
     private EstadoPedido estadoPedido;
     private List<DetallePedido> detalles;
 
+    public Pedido(int codigoPedido, LocalDate fecha, Cliente cliente) {
+        this(codigoPedido, fecha, cliente, ModalidadEntrega.RESTAURANTE);
+    }
+
     public Pedido(int codigoPedido, LocalDate fecha, Cliente cliente, ModalidadEntrega modalidadEntrega) {
         this.codigoPedido = codigoPedido;
         this.fecha = fecha;
@@ -22,6 +26,12 @@ public class Pedido {
         this.estadoPedido = EstadoPedido.PENDIENTE;
         this.detalles = new ArrayList<>();
         this.distanciaKm = 0.0;
+    }
+
+    public Pedido(int codigoPedido, LocalDate fecha, Cliente cliente, int distanciaKm, EmpresaDomicilio empresa) {
+        this(codigoPedido, fecha, cliente, ModalidadEntrega.DOMICILIO);
+        this.distanciaKm = distanciaKm;
+        this.iservicioDomicilio = empresa.getServicio();
     }
 
     public void agregarDetalle(Producto producto, int cantidad) {
@@ -45,6 +55,10 @@ public class Pedido {
     }
 
     public int getCodigoPedido() {
+        return codigoPedido;
+    }
+
+    public int getCodigo() {
         return codigoPedido;
     }
 
@@ -96,8 +110,20 @@ public class Pedido {
         return estadoPedido;
     }
 
+    public EstadoPedido getEstado() {
+        return estadoPedido;
+    }
+
     public void setEstadoPedido(EstadoPedido estadoPedido) {
         this.estadoPedido = estadoPedido;
+    }
+
+    public void setEstado(EstadoPedido estadoPedido) {
+        this.estadoPedido = estadoPedido;
+    }
+
+    public double calcularTotal() {
+        return calcularTotalPedido();
     }
 
     public List<DetallePedido> getDetalles() {

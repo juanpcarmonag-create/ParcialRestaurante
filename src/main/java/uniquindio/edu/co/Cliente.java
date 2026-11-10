@@ -19,7 +19,15 @@ public class Cliente {
         return documento;
     }
 
+    public int getIdentificacion() {
+        return documento;
+    }
+
     public void setDocumento(int documento) {
+        this.documento = documento;
+    }
+
+    public void setIdentificacion(int documento) {
         this.documento = documento;
     }
 
@@ -27,7 +35,15 @@ public class Cliente {
         return nombreCliente;
     }
 
+    public String getNombre() {
+        return nombreCliente;
+    }
+
     public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+    }
+
+    public void setNombre(String nombreCliente) {
         this.nombreCliente = nombreCliente;
     }
 
@@ -51,7 +67,15 @@ public class Cliente {
         return direccionCliente;
     }
 
+    public String getDireccion() {
+        return direccionCliente;
+    }
+
     public void setDireccionCliente(String direccionCliente) {
+        this.direccionCliente = direccionCliente;
+    }
+
+    public void setDireccion(String direccionCliente) {
         this.direccionCliente = direccionCliente;
     }
 
